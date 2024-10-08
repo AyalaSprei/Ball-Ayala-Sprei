@@ -8,10 +8,19 @@ var BALL_IMG = '<img src="img/ball.png" />';
 
 var gBoard;
 var gGamerPos;
+
+var RightHole={i:4,j:11}
+var LeftHole={i:4,j:0}
+
+var ballCount=2;
+
 function initGame() {
 	gGamerPos = { i: 2, j: 9 };
 	gBoard = buildBoard();
 	renderBoard(gBoard);
+	var intreval=setInterval(function() {
+		placeRandomBall(gBoard);
+	}, 3000);
 }
 
 
@@ -30,9 +39,13 @@ function buildBoard() {
 			var cell = { type: FLOOR, gameElement: null };
 
 			// Place Walls at edges
-			if (i === 0 || i === board.length - 1 || j === 0 || j === board[0].length - 1) {
+			if(i===RightHole.i && j===RightHole.j) cell.type = FLOOR;
+			else if(i===LeftHole.i && j===LeftHole.j) cell.type = FLOOR;
+			else if (i === 0 || i === board.length - 1 || j === 0 || j === board[0].length - 1) {
 				cell.type = WALL;
+
 			}
+			
 
 			// Add created cell to The game board
 			board[i][j] = cell;
@@ -49,6 +62,7 @@ function buildBoard() {
 	console.log(board);
 	return board;
 }
+
 
 // Render the board to an HTML table
 function renderBoard(board) {
@@ -101,6 +115,8 @@ function moveTo(i, j) {
 
 		if (targetCell.gameElement === BALL) {
 			console.log('Collecting!');
+			ballCount--;
+			
 		}
 
 		// MOVING from current position
@@ -116,6 +132,13 @@ function moveTo(i, j) {
 		gBoard[gGamerPos.i][gGamerPos.j].gameElement = GAMER;
 		// DOM:
 		renderCell(gGamerPos, GAMER_IMG);
+		 
+		   setTimeout(function() {
+            if (ballCount === 0) {
+                alert('Game Over!');
+            }
+        }, 100);
+		clearInterval(intreval); 
 
 	} // else console.log('TOO FAR', iAbsDiff, jAbsDiff);
 
@@ -158,5 +181,26 @@ function getClassName(location) {
 	var cellClass = 'cell-' + location.i + '-' + location.j;
 	console.log('cellClass:', cellClass);
 	return cellClass;
+}
+function placeRandomBall(board) {
+	var emptyCells = [];
+
+	// Find all empty cells
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[0].length; j++) {
+			if (board[i][j].type === FLOOR && board[i][j].gameElement === null) {
+				emptyCells.push({ i: i, j: j });
+			}
+		}
+	}
+
+	// Place a ball in a random empty cell
+	if (emptyCells.length > 0) {
+		var randIdx = Math.floor(Math.random() * emptyCells.length);
+		var randomCell = emptyCells[randIdx];
+		board[randomCell.i][randomCell.j].gameElement = BALL;
+		ballCount++; // Increment the ball counter
+		renderBoard(board); // Render the board with the new ball added
+	}
 }
 
