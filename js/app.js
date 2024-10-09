@@ -13,14 +13,14 @@ var RightHole = { i: 4, j: 11 };
 var LeftHole = { i: 4, j: 0 };
 
 var ballCount = 2;
-
+var intreval
 function initGame() {
   gGamerPos = { i: 2, j: 9 };
   gBoard = buildBoard();
   renderBoard(gBoard);
-  var intreval = setInterval(function () {
+  intreval = setInterval(function () {
     placeRandomBall(gBoard);
-  }, 3000);
+  }, 2000);
 }
 
 function buildBoard() {
@@ -108,8 +108,8 @@ function renderBoard(board) {
 
 // Move the player to a specific location
 function moveTo(thei, thej) {
-	console.log("checking",ithei,thej);
-
+var i;
+var j;
   if (
     (gGamerPos.i == RightHole.i && gGamerPos.j == RightHole.j) ||
     (gGamerPos.i == LeftHole.i && gGamerPos.j == LeftHole.j)
@@ -123,8 +123,8 @@ function moveTo(thei, thej) {
 		}
     }
   }
-  var i=thei;
-  var j=thej;
+   i=thei;
+   j=thej;
 
   console.log("checking",i,j);
   var targetCell = gBoard[i][j];
