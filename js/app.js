@@ -108,23 +108,21 @@ function renderBoard(board) {
 
 // Move the player to a specific location
 function moveTo(thei, thej) {
-var i;
-var j;
+let i=thei;
+let j=thej;
   if (
-    (gGamerPos.i == RightHole.i && gGamerPos.j == RightHole.j) ||
-    (gGamerPos.i == LeftHole.i && gGamerPos.j == LeftHole.j)
+    (gGamerPos.i === RightHole.i && gGamerPos.j === RightHole.j) ||
+    (gGamerPos.i === LeftHole.i && gGamerPos.j === LeftHole.j)
   ) {
     if (thei === RightHole.i && (thej<0||thej>11) ){
 		if(thej<0){
-			thej=11
+			j=11;
 		}
 		else{
-			thej=0;
+			j=0;
 		}
     }
   }
-   i=thei;
-   j=thej;
 
   console.log("checking",i,j);
   var targetCell = gBoard[i][j];
@@ -137,7 +135,8 @@ var j;
   // If the clicked Cell is one of the four allowed
   if (
     (iAbsDiff === 1 && jAbsDiff === 0) ||
-    (jAbsDiff === 1 && iAbsDiff === 0)
+    (jAbsDiff === 1 && iAbsDiff === 0) ||(gGamerPos.i === RightHole.i && gGamerPos.j === RightHole.j) ||
+    (gGamerPos.i === LeftHole.i && gGamerPos.j === LeftHole.j)
   ) {
     if (targetCell.gameElement === BALL) {
       console.log("Collecting!");
